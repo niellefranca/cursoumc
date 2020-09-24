@@ -21,4 +21,11 @@ public class CategoriaService {
 
 	}
 
+	/*public List<Categoria> buscarAll(){
+		
+		List<Categoria> listaCategoria = catRepositorio.findAll();
+		
+		return listaCategoria;
+	}*/
+	
 }

@@ -1,5 +1,7 @@
 package br.com.daniellefranca.cursoumc.resources;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -24,5 +26,13 @@ public class CategoriaResource {
 		
 		return ResponseEntity.ok().body(obj);
 	}
+	
+	/*@RequestMapping(method = RequestMethod.GET)
+	public List<Categoria> findAll(){
+		
+		List<Categoria> listCategoria = catService.buscarAll();
+		
+		return listCategoria;
+	}*/
 	
 }
