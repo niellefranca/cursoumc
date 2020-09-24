@@ -1,31 +1,28 @@
 package br.com.daniellefranca.cursoumc.resources;
 
-import java.beans.PersistenceDelegate;
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
-
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.com.daniellefranca.cursoumc.domain.Categoria;
+import br.com.daniellefranca.cursoumc.services.CategoriaService;
 
 @RestController
 @RequestMapping(value="/categorias")
 public class CategoriaResource {
 
-	@RequestMapping(method=RequestMethod.GET)
-	public Categoria listar() {
+	@Autowired
+	private CategoriaService catService;
+	
+	@RequestMapping(value="/{id}", method=RequestMethod.GET)
+	public ResponseEntity<?> find(@PathVariable Integer id) {
+
+		Categoria obj = catService.buscar(id);
 		
-		
-		EntityManagerFactory emf = Persistence.createEntityManagerFactory("configbanco");
-		EntityManager em = emf.createEntityManager();
-		Categoria c1 = em.find(Categoria.class, 1);
-		
-		return c1;
+		return ResponseEntity.ok().body(obj);
 	}
+	
 }
