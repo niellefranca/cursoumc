@@ -9,10 +9,15 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import br.com.daniellefranca.cursoumc.domain.Categoria;
 import br.com.daniellefranca.cursoumc.domain.Cidade;
+import br.com.daniellefranca.cursoumc.domain.Cliente;
+import br.com.daniellefranca.cursoumc.domain.Endereco;
 import br.com.daniellefranca.cursoumc.domain.Estado;
 import br.com.daniellefranca.cursoumc.domain.Produto;
+import br.com.daniellefranca.cursoumc.domain.enums.TipoCliente;
 import br.com.daniellefranca.cursoumc.repositories.CategoriaRepository;
 import br.com.daniellefranca.cursoumc.repositories.CidadeRepository;
+import br.com.daniellefranca.cursoumc.repositories.ClienteRepository;
+import br.com.daniellefranca.cursoumc.repositories.EnderecoRepository;
 import br.com.daniellefranca.cursoumc.repositories.EstadoRepository;
 import br.com.daniellefranca.cursoumc.repositories.ProdutoRepository;
 
@@ -27,6 +32,10 @@ public class CursoumcApplication implements CommandLineRunner {
 	CidadeRepository cidadeRepository;
 	@Autowired
 	EstadoRepository estadoRepository;
+	@Autowired
+	ClienteRepository clienteRepository;
+	@Autowired
+	EnderecoRepository enderecoRepository;
 
 	public static void main(String[] args) {
 		SpringApplication.run(CursoumcApplication.class, args);
@@ -69,6 +78,22 @@ public class CursoumcApplication implements CommandLineRunner {
 		estadoRepository.saveAll(Arrays.asList(est1, est2));
 		cidadeRepository.saveAll(Arrays.asList(cid1, cid2, cid3));
 		
+		
+		Cliente dani = new Cliente(null, "Danielle", "niellefranca@gmail.com", "07305269417", TipoCliente.PESSOAFISICA);
+		Cliente felipe = new Cliente(null, "Kevinn Felipe", "kfeliph@gmail.com", "06902061432", TipoCliente.PESSOAFISICA);
+		
+		dani.getTelefones().addAll(Arrays.asList("997218622", "34822535"));
+		felipe.getTelefones().add("997549332");
+		
+		Endereco endDani = new Endereco(null, "Rua Carceres", "381", "Bloco 15 Apt 301", "Candeias", "54430170", dani, cid3);
+		Endereco endFelipe = new Endereco(null, "Rua Carceres", "381", "Bloco 15 Apt 301", "Candeias", "54430170", felipe, cid3);
+	
+		dani.getEnderecos().add(endDani);
+		felipe.getEnderecos().add(endFelipe);
+		
+		clienteRepository.saveAll(Arrays.asList(dani, felipe));
+		enderecoRepository.saveAll(Arrays.asList(endDani, endFelipe));
+	
 
 	}
 }
