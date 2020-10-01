@@ -1,5 +1,6 @@
 package br.com.daniellefranca.cursoumc;
 
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,13 +13,20 @@ import br.com.daniellefranca.cursoumc.domain.Cidade;
 import br.com.daniellefranca.cursoumc.domain.Cliente;
 import br.com.daniellefranca.cursoumc.domain.Endereco;
 import br.com.daniellefranca.cursoumc.domain.Estado;
+import br.com.daniellefranca.cursoumc.domain.Pagamento;
+import br.com.daniellefranca.cursoumc.domain.PagamentoComBoleto;
+import br.com.daniellefranca.cursoumc.domain.PagamentoComCartao;
+import br.com.daniellefranca.cursoumc.domain.Pedido;
 import br.com.daniellefranca.cursoumc.domain.Produto;
+import br.com.daniellefranca.cursoumc.domain.enums.EstadoPagamento;
 import br.com.daniellefranca.cursoumc.domain.enums.TipoCliente;
 import br.com.daniellefranca.cursoumc.repositories.CategoriaRepository;
 import br.com.daniellefranca.cursoumc.repositories.CidadeRepository;
 import br.com.daniellefranca.cursoumc.repositories.ClienteRepository;
 import br.com.daniellefranca.cursoumc.repositories.EnderecoRepository;
 import br.com.daniellefranca.cursoumc.repositories.EstadoRepository;
+import br.com.daniellefranca.cursoumc.repositories.PagamentoRepository;
+import br.com.daniellefranca.cursoumc.repositories.PedidoRepository;
 import br.com.daniellefranca.cursoumc.repositories.ProdutoRepository;
 
 @SpringBootApplication
@@ -36,6 +44,10 @@ public class CursoumcApplication implements CommandLineRunner {
 	ClienteRepository clienteRepository;
 	@Autowired
 	EnderecoRepository enderecoRepository;
+	@Autowired
+	PedidoRepository pedidoRepository;
+	@Autowired
+	PagamentoRepository pagamentoRepository;
 
 	public static void main(String[] args) {
 		SpringApplication.run(CursoumcApplication.class, args);
@@ -94,6 +106,25 @@ public class CursoumcApplication implements CommandLineRunner {
 		clienteRepository.saveAll(Arrays.asList(dani, felipe));
 		enderecoRepository.saveAll(Arrays.asList(endDani, endFelipe));
 	
+		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+		
+		Pedido ped1 = new Pedido(null, sdf.parse("01/10/2020 17:50"), dani, endDani);
+		Pedido ped2 = new Pedido(null, sdf.parse("01/10/2020 17:50"), felipe, endFelipe);
+		
+		Pagamento pgtoPed1 = new PagamentoComBoleto(null, EstadoPagamento.QUITADO, ped1, sdf.parse("01/10/2020 17:50"), sdf.parse("01/10/2020 17:50"));
+		ped1.setPagamento(pgtoPed1);
+		Pagamento pgtoPed2 = new PagamentoComCartao(null, EstadoPagamento.PENDENTE, ped2, 5);
+		ped2.setPagamento(pgtoPed2);
+		
+		dani.getPedidos().add(ped1);
+		felipe.getPedidos().add(ped2);
+		
+		pedidoRepository.saveAll(Arrays.asList(ped1, ped2));
+		pagamentoRepository.saveAll(Arrays.asList(pgtoPed1, pgtoPed2));
+		
+		
+		
+		
 
 	}
 }
