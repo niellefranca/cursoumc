@@ -10,6 +10,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
+
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
@@ -36,8 +37,10 @@ public class Estado implements Serializable {
 	public Estado(Integer id, String nome) {
 		super();
 		this.id = id;
-		this.nome = nome;
+		this.setNome(nome);
 	}
+
+
 
 	public Integer getId() {
 		return id;
@@ -80,15 +83,18 @@ public class Estado implements Serializable {
 		return true;
 	}
 
+
+
 	public String getNome() {
 		return nome;
 	}
 
 
+
 	public void setNome(String nome) {
 		this.nome = nome;
 	}
-
+	
 	
 }
 

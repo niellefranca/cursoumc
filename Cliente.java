@@ -33,6 +33,9 @@ public class Cliente implements Serializable {
 	private String cpfOuCnpj;
 	private Integer Tipo;
 	
+	@OneToMany(mappedBy = "cliente")
+	private List<Pedido> pedidos = new ArrayList<>(); 
+
 	@JsonManagedReference
 	@OneToMany(mappedBy = "cliente")
 	private List<Endereco> enderecos = new ArrayList<Endereco>();
@@ -40,9 +43,6 @@ public class Cliente implements Serializable {
 	@ElementCollection()
 	@CollectionTable(name = "telefone")
 	private Set<String> telefones = new HashSet<>();
-	
-	private List<Pedido> pedidos = new ArrayList<Pedido>();
-	
 
 	public Cliente() {
 
@@ -162,7 +162,6 @@ public class Cliente implements Serializable {
 		this.telefones = telefones;
 	}
 
-
 	public List<Pedido> getPedidos() {
 		return pedidos;
 	}
@@ -170,6 +169,5 @@ public class Cliente implements Serializable {
 	public void setPedidos(List<Pedido> pedidos) {
 		this.pedidos = pedidos;
 	}
-
 
 }
