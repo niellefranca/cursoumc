@@ -22,6 +22,10 @@ public class CategoriaService {
 
 	}
 
+	public Categoria insert(Categoria obj) {
+		return catRepositorio.save(obj);
+	}
+
 	/*public List<Categoria> buscarAll(){
 		
 		List<Categoria> listaCategoria = catRepositorio.findAll();
