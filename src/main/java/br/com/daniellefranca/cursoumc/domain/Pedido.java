@@ -5,17 +5,20 @@ import java.util.Date;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 
-import org.hibernate.annotations.ManyToAny;
 @Entity
 public class Pedido implements Serializable {
 	
 	
 	private static final long serialVersionUID = 1L;
-
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer Id;
 	private Date instante;
 	@OneToOne(cascade = CascadeType.ALL, mappedBy = "pedido")
@@ -26,7 +29,7 @@ public class Pedido implements Serializable {
 	private Cliente cliente;
 	
 	@ManyToOne()
-	@JoinColumn(name="enderecoEntrega")
+	@JoinColumn(name="endereco_de_entrega_id")
 	private Endereco enderecoEntrega;
 
 	public Pedido() {

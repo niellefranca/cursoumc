@@ -8,5 +8,5 @@ import br.com.daniellefranca.cursoumc.domain.Endereco;
 
 @Repository
 public interface EnderecoRepository extends JpaRepository<Endereco, Integer>{
-	
+
 }

@@ -8,4 +8,5 @@ import br.com.daniellefranca.cursoumc.domain.Estado;
 @Repository
 public interface EstadoRepository extends JpaRepository<Estado, Integer>{
 	
+	
 }

@@ -77,6 +77,7 @@ public class CursoumcApplication implements CommandLineRunner {
 		prodRepositorio.saveAll(Arrays.asList(p1, p2, p3));
 		
 		
+		
 		Estado est1 = new Estado(null, "Pernambuco");
 		Estado est2 = new Estado(null, "Paraíba");
 		
