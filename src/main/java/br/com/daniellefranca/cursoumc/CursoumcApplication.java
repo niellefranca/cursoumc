@@ -13,6 +13,7 @@ import br.com.daniellefranca.cursoumc.domain.Cidade;
 import br.com.daniellefranca.cursoumc.domain.Cliente;
 import br.com.daniellefranca.cursoumc.domain.Endereco;
 import br.com.daniellefranca.cursoumc.domain.Estado;
+import br.com.daniellefranca.cursoumc.domain.ItemPedido;
 import br.com.daniellefranca.cursoumc.domain.Pagamento;
 import br.com.daniellefranca.cursoumc.domain.PagamentoComBoleto;
 import br.com.daniellefranca.cursoumc.domain.PagamentoComCartao;
@@ -25,6 +26,7 @@ import br.com.daniellefranca.cursoumc.repositories.CidadeRepository;
 import br.com.daniellefranca.cursoumc.repositories.ClienteRepository;
 import br.com.daniellefranca.cursoumc.repositories.EnderecoRepository;
 import br.com.daniellefranca.cursoumc.repositories.EstadoRepository;
+import br.com.daniellefranca.cursoumc.repositories.ItemPedidoRepository;
 import br.com.daniellefranca.cursoumc.repositories.PagamentoRepository;
 import br.com.daniellefranca.cursoumc.repositories.PedidoRepository;
 import br.com.daniellefranca.cursoumc.repositories.ProdutoRepository;
@@ -48,6 +50,8 @@ public class CursoumcApplication implements CommandLineRunner {
 	PedidoRepository pedidoRepository;
 	@Autowired
 	PagamentoRepository pagamentoRepository;
+	@Autowired
+	ItemPedidoRepository itemPedidoRepository;
 
 	public static void main(String[] args) {
 		SpringApplication.run(CursoumcApplication.class, args);
@@ -123,8 +127,19 @@ public class CursoumcApplication implements CommandLineRunner {
 		pedidoRepository.saveAll(Arrays.asList(ped1, ped2));
 		pagamentoRepository.saveAll(Arrays.asList(pgtoPed1, pgtoPed2));
 		
+		ItemPedido item1 = new ItemPedido(ped1, p1, 0.00, 1, p1.getPreco());
+		ItemPedido item2 = new ItemPedido(ped1, p2, 0.00, 1, p2.getPreco());
+		ItemPedido item3 = new ItemPedido(ped2, p3, 0.00, 1, p3.getPreco());
+		
+		ped1.getItens().addAll(Arrays.asList(item1, item2));
+		ped2.getItens().addAll(Arrays.asList(item3));
+		
+		p1.getItens().addAll(Arrays.asList(item1));
+		p2.getItens().addAll(Arrays.asList(item2));
+		p3.getItens().addAll(Arrays.asList(item3));
 		
 		
+		itemPedidoRepository.saveAll(Arrays.asList(item1, item2, item3));
 		
 
 	}
