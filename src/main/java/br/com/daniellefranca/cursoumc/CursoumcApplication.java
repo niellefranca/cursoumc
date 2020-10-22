@@ -62,6 +62,11 @@ public class CursoumcApplication implements CommandLineRunner {
 
 		Categoria cat1 = new Categoria(1, "Informática");
 		Categoria cat2 = new Categoria(2, "Escritório");
+		Categoria cat3 = new Categoria(3, "Decoração");
+		Categoria cat4 = new Categoria(4, "Pés");
+		Categoria cat5 = new Categoria(5, "Higiene Pessoal");
+		Categoria cat6 = new Categoria(6, "Cabelos");
+		
 
 		Produto p1 = new Produto(1, "Computador", 1399);
 		Produto p2 = new Produto(2, "Impressora", 3999);
@@ -77,7 +82,7 @@ public class CursoumcApplication implements CommandLineRunner {
 		p2.getCategorias().addAll(Arrays.asList(cat1, cat2));
 		p3.getCategorias().add(cat1);
 
-		catRepositorio.saveAll(Arrays.asList(cat1, cat2));
+		catRepositorio.saveAll(Arrays.asList(cat1, cat2, cat3, cat4, cat5, cat6));
 		prodRepositorio.saveAll(Arrays.asList(p1, p2, p3));
 		
 		
