@@ -57,7 +57,7 @@ public class Cliente implements Serializable {
 		this.nome = nome;
 		this.email = email;
 		this.cpfOuCnpj = cpfOuCnpj;
-		Tipo = tipo.getCod();
+		Tipo = (tipo == null ? null :tipo.getCod());
 	}
 
 	public List<Endereco> getEnderecos() {
