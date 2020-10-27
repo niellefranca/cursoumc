@@ -11,6 +11,7 @@ import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 
 import br.com.daniellefranca.cursoumc.domain.Categoria;
+import br.com.daniellefranca.cursoumc.domain.Cliente;
 import br.com.daniellefranca.cursoumc.dto.CategoriaDTO;
 import br.com.daniellefranca.cursoumc.repositories.CategoriaRepository;
 import br.com.daniellefranca.cursoumc.services.exception.DataIntegrityException;
@@ -35,7 +36,8 @@ public class CategoriaService {
 	}
 
 	public Categoria update(Categoria obj) throws ObjectNotFoundException {
-		find(obj.getId());
+		Categoria newObj = find(obj.getId());
+		updateData(newObj, obj);
 		return catRepositorio.save(obj);
 	}
 
@@ -44,7 +46,7 @@ public class CategoriaService {
 		try {
 			catRepositorio.deleteById(id);
 		} catch (DataIntegrityViolationException dtv) {
-			throw new DataIntegrityException("Não é possíve excluir uma categoria que possui produtos");
+			throw new DataIntegrityException("Não é possíve excluir porque há entidades relacionadas.");
 		}
 
 	}
@@ -64,5 +66,8 @@ public class CategoriaService {
 		return new Categoria(categoriaDto.getId(), categoriaDto.getNome());
 	}
 	
+	private void updateData(Categoria newObj, Categoria obj) {
+		newObj.setNome(obj.getNome());
+	}
 
 }
