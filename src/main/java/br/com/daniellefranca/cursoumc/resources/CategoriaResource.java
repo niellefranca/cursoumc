@@ -39,8 +39,7 @@ public class CategoriaResource {
 	public ResponseEntity<Void> insert (@Valid @RequestBody CategoriaDTO objDto){
 		Categoria categoria = catService.fromDto(objDto);
 		categoria = catService.insert(categoria);
-		URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
-				.path("/{id}").buildAndExpand(categoria.getId()).toUri();
+		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(categoria.getId()).toUri();
 		return ResponseEntity.created(uri).build();
 	}
 	
