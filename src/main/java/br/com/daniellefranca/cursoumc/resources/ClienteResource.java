@@ -1,5 +1,6 @@
 package br.com.daniellefranca.cursoumc.resources;
 
+import java.net.URI;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -14,9 +15,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import br.com.daniellefranca.cursoumc.domain.Categoria;
 import br.com.daniellefranca.cursoumc.domain.Cliente;
+import br.com.daniellefranca.cursoumc.dto.CategoriaDTO;
 import br.com.daniellefranca.cursoumc.dto.ClienteDTO;
+import br.com.daniellefranca.cursoumc.dto.ClienteNewDTO;
 import br.com.daniellefranca.cursoumc.services.ClienteService;
 import javassist.tools.rmi.ObjectNotFoundException;
 
@@ -66,6 +71,14 @@ public class ClienteResource {
 		Page<Cliente> listPage = clienteService.findPage(page, linesPerPage, orderBy, direction);
 		Page<ClienteDTO> listDto = listPage.map(obj -> new ClienteDTO(obj));
 		return ResponseEntity.ok().body(listDto);
+	}
+	
+	@RequestMapping(method=RequestMethod.POST)
+	public ResponseEntity<Void> insert (@Valid @RequestBody ClienteNewDTO objDto){
+		Cliente cliente = clienteService.fromDto(objDto);
+		cliente = clienteService.insert(cliente);
+		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(cliente.getId()).toUri();
+		return ResponseEntity.created(uri).build();
 	}
 	
 	

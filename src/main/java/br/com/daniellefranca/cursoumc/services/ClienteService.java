@@ -10,10 +10,14 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 
+import br.com.daniellefranca.cursoumc.domain.Cidade;
 import br.com.daniellefranca.cursoumc.domain.Cliente;
-import br.com.daniellefranca.cursoumc.domain.Cliente;
+import br.com.daniellefranca.cursoumc.domain.Endereco;
+import br.com.daniellefranca.cursoumc.domain.enums.TipoCliente;
 import br.com.daniellefranca.cursoumc.dto.ClienteDTO;
+import br.com.daniellefranca.cursoumc.dto.ClienteNewDTO;
 import br.com.daniellefranca.cursoumc.repositories.ClienteRepository;
+import br.com.daniellefranca.cursoumc.repositories.EnderecoRepository;
 import br.com.daniellefranca.cursoumc.services.exception.DataIntegrityException;
 import javassist.tools.rmi.ObjectNotFoundException;
 
@@ -22,6 +26,9 @@ public class ClienteService {
 
 	@Autowired
 	private ClienteRepository clienteRepositorio;
+	
+	@Autowired
+	private EnderecoRepository enderecoRepositorio;
 
 	public Cliente find(Integer id) throws ObjectNotFoundException {
 
@@ -31,7 +38,9 @@ public class ClienteService {
 	}
 	
 	public Cliente insert(Cliente obj) {
-		return clienteRepositorio.save(obj);
+		obj = clienteRepositorio.save(obj);
+		enderecoRepositorio.saveAll(obj.getEnderecos());
+		return obj;
 	}
 
 	public Cliente update(Cliente obj) throws ObjectNotFoundException {
@@ -65,7 +74,21 @@ public class ClienteService {
 		return new Cliente(clienteDto.getId(), clienteDto.getNome(), clienteDto.getEmail(), null, null);	
 	}
 	
-
+	public Cliente fromDto(ClienteNewDTO clienteNewDto) throws ObjectNotFoundException {
+		Cliente cliente = new Cliente(null, clienteNewDto.getNome(), clienteNewDto.getEmail(), clienteNewDto.getCpfOuCnpj(),
+				                      TipoCliente.toEnum(clienteNewDto.getTipo()));
+		
+		Cidade cidade = new Cidade(clienteNewDto.getCidadeId(), null, null);
+		
+		Endereco endereco = new Endereco(null, clienteNewDto.getLogradouro(), clienteNewDto.getNumero(), clienteNewDto.getComplemento(),
+				clienteNewDto.getBairro(), clienteNewDto.getCep(), cliente, cidade);
+				
+		cliente.getEnderecos().add(endereco);
+		cliente.getTelefones().add(clienteNewDto.getTelefone1());
+		
+		return cliente;
+	}
+	
 	private void updateData(Cliente newObj, Cliente obj) {
 		newObj.setNome(obj.getNome());
 		newObj.setEmail(obj.getEmail());
